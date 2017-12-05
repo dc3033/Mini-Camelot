@@ -6,14 +6,9 @@
 
 using namespace std;
 
-bool humanTurn = true;
+auto humanTurn = true;
 
-int scoreMin = 100;
-int scoreMax = 0;
-int maxDepth = 0;
-int nodeCount = 0;
-int maxPruneCount = 0;
-int minPruneCount = 0;
+auto scoreMin = 100, scoreMax = 0, maxDepth = 0, nodeCount = 0, maxPruneCount = 0, minPruneCount = 0;
 
 enum GameState {ONGOING, DRAW, BLACK_WIN, WHITE_WIN};
 
@@ -68,45 +63,45 @@ void displayBoard(vector<Space>& bvec){ /*displays the board using the values fr
 }
 
 void initVec(vector<Space>& bvec) { /*generates initial values for the spaces in the space vector*/
-	for (int i = 0; i < 2; i++){
+	for (auto i = 0; i < 2; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i + 4;
 		bvec[i].yCoord = 'a';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
 	}
-	for (int i = 2; i < 6; i++){
+	for (auto i = 2; i < 6; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i + 1;
 		bvec[i].yCoord = 'b';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
 	}
-	for (int i = 6; i < 12; i++){
+	for (auto i = 6; i < 12; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 4;
 		bvec[i].yCoord = 'c';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
 	}
-	for (int i = 12; i < 20; i++){
+	for (auto i = 12; i < 20; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 11;
 		bvec[i].yCoord = 'd';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
 	}
-	for (int i = 20; i < 28; i++){
+	for (auto i = 20; i < 28; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 19;
 		bvec[i].yCoord = 'e';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
 	}
-	for (int i = 22; i < 26; i++){
+	for (auto i = 22; i < 26; i++){
 		bvec[i].color = 'b';
 	}
-	for (int i = 28; i < 36; i++){
+	for (auto i = 28; i < 36; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 27;
 		bvec[i].yCoord = 'f';
@@ -115,21 +110,21 @@ void initVec(vector<Space>& bvec) { /*generates initial values for the spaces in
 	}
 	bvec[31].color = 'b';
 	bvec[32].color = 'b';
-	for (int i = 36; i < 44; i++){
+	for (auto i = 36; i < 44; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 35;
 		bvec[i].yCoord = 'g';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
 	}
-	for (int i = 44; i < 52; i++){
+	for (auto i = 44; i < 52; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 43;
 		bvec[i].yCoord = 'h';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
 	}
-	for (int i = 52; i < 60; i++){
+	for (auto i = 52; i < 60; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 51;
 		bvec[i].yCoord = 'i';
@@ -138,38 +133,38 @@ void initVec(vector<Space>& bvec) { /*generates initial values for the spaces in
 	}
 	bvec[55].color = 'w';
 	bvec[56].color = 'w';
-	for (int i = 60; i < 68; i++){
+	for (auto i = 60; i < 68; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 59;
 		bvec[i].yCoord = 'j';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
 	}
-	for (int i = 62; i < 66; i++){
+	for (auto i = 62; i < 66; i++){
 		bvec[i].color = 'w';
 	}
-	for (int i = 68; i < 76; i++){
+	for (auto i = 68; i < 76; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 65;
 		bvec[i].yCoord = 'k';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
 	}
-	for (int i = 76; i < 82; i++){
+	for (auto i = 76; i < 82; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 74;
 		bvec[i].yCoord = 'l';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
 	}
-	for (int i = 82; i < 86; i++){
+	for (auto i = 82; i < 86; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 79;
 		bvec[i].yCoord = 'm';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
 	}
-	for (int i = 86; i < 88; i++){
+	for (auto i = 86; i < 88; i++){
 		bvec[i].color = ' ';
 		bvec[i].xCoord = i - 82;
 		bvec[i].yCoord = 'n';
@@ -991,8 +986,8 @@ void blackCapToSpace(Space* sp, vector<Space>& bvec){
 
 //checks the state of the game (ongoing, win, or draw)
 void checkGameState(vector<Space>& bvec){
-	int whitepc = 0;
-	int blackpc = 0;
+	auto whitepc = 0;
+	auto blackpc = 0;
 	for (Space i : bvec){
 		if (i.color = 'w') { whitepc += 1; }
 		if (i.color = 'b') { blackpc += 1; }
@@ -1118,6 +1113,6 @@ int main(){
 	else if (gameState == WHITE_WIN){ whiteWins(); }
 	else if (gameState == DRAW){ gameDraw(); }
 	else { cout << "Something went wrong."; }
-	system("pause");
-	return 0;
+	//system("pause");
+	cin.get();
 }
