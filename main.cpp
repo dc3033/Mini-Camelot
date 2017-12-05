@@ -1101,18 +1101,26 @@ void aiTurn(){
 	displayBoard(boardVec);
 }
 
-int main(){
+int main()
+{
 	initVec(boardVec);
+	
 	cout << "\nWelcome to Mini-Camelot! Please read the readme before you play.\n";
-	while (gameState == ONGOING){
+	
+	while (gameState == ONGOING)
+	{
 		if (humanTurn){ playerTurn(); }
 		else { aiTurn(); }
 		checkGameState(boardVec);
 	}
+	
 	if (gameState == BLACK_WIN){ blackWins(); }
+	
 	else if (gameState == WHITE_WIN){ whiteWins(); }
+	
 	else if (gameState == DRAW){ gameDraw(); }
+	
 	else { cout << "Something went wrong."; }
-	//system("pause");
+	
 	cin.get();
 }
