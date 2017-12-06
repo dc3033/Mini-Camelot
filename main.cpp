@@ -145,7 +145,7 @@ void initVec(vector<Space>& bvec) { /*generates initial values for the spaces in
 	}
 	for (auto i = 68; i < 76; i++){
 		bvec[i].color = ' ';
-		bvec[i].xCoord = i - 65;
+		bvec[i].xCoord = i - 67;
 		bvec[i].yCoord = 'k';
 		bvec[i].vectorNum = i;
 		bvec[i].isCastle = false;
@@ -184,7 +184,7 @@ bool invalidCoordCheck(int i, char c){
 	else if (int(c) > 110 || int(c) < 97){ return true; }
 	else if ((c == 'a' || c == 'n') && (i < 4 || i > 5)){ return true; }
 	else if ((c == 'b' || c == 'm') && (i < 3 || i > 6)){ return true; }
-	else if ((c == 'c' || c == 'p') && (i < 2 || i > 7)){ return true; }
+	else if ((c == 'c' || c == 'l') && (i < 2 || i > 7)){ return true; }
 	else{ return false; }
 }
 
@@ -221,6 +221,10 @@ bool checkUserInput(string& input){
 			return false;
 		}
 		else { return true; }
+	}
+	else {
+		cout << "\nThat's not a valid input. Try again.\n";
+		return false; 
 	}
 }
 
@@ -422,7 +426,7 @@ bool checkIfWhiteCanCapture(vector<Space>& bvec){ //checks to see if the player 
 			Space osn = getSpaceOneN(i, bvec);
 			Space oss = getSpaceOneS(i, bvec);
 			Space ose = getSpaceOneE(i, bvec);
-			Space osw = getSpaceOneN(i, bvec);
+			Space osw = getSpaceOneW(i, bvec);
 			Space osne = getSpaceOneNE(i, bvec);
 			Space osse = getSpaceOneSE(i, bvec);
 			Space osnw = getSpaceOneNW(i, bvec);
@@ -431,7 +435,7 @@ bool checkIfWhiteCanCapture(vector<Space>& bvec){ //checks to see if the player 
 			Space tsn = getSpaceTwoN(i, bvec);
 			Space tss = getSpaceTwoS(i, bvec);
 			Space tse = getSpaceTwoE(i, bvec);
-			Space tsw = getSpaceTwoN(i, bvec);
+			Space tsw = getSpaceTwoW(i, bvec);
 			Space tsne = getSpaceTwoNE(i, bvec);
 			Space tsse = getSpaceTwoSE(i, bvec);
 			Space tsnw = getSpaceTwoNW(i, bvec);
@@ -459,7 +463,7 @@ bool checkIfPlayerCanMove(Space& og, vector<Space>& bvec){ //checks to see if th
 	Space osn = getSpaceOneN(og, bvec);
 	Space oss = getSpaceOneS(og, bvec);
 	Space ose = getSpaceOneE(og, bvec);
-	Space osw = getSpaceOneN(og, bvec);
+	Space osw = getSpaceOneW(og, bvec);
 	Space osne = getSpaceOneNE(og, bvec);
 	Space osse = getSpaceOneSE(og, bvec);
 	Space osnw = getSpaceOneNW(og, bvec);
@@ -470,7 +474,7 @@ bool checkIfPlayerCanMove(Space& og, vector<Space>& bvec){ //checks to see if th
 	Space tsn = getSpaceTwoN(og, bvec);
 	Space tss = getSpaceTwoS(og, bvec);
 	Space tse = getSpaceTwoE(og, bvec);
-	Space tsw = getSpaceTwoN(og, bvec);
+	Space tsw = getSpaceTwoW(og, bvec);
 	Space tsne = getSpaceTwoNE(og, bvec);
 	Space tsse = getSpaceTwoSE(og, bvec);
 	Space tsnw = getSpaceTwoNW(og, bvec);
@@ -497,7 +501,7 @@ bool checkIfPlayerCanCapture(Space& og, vector<Space>& bvec){ //checks to see if
 	Space osn = getSpaceOneN(og, bvec);
 	Space oss = getSpaceOneS(og, bvec);
 	Space ose = getSpaceOneE(og, bvec);
-	Space osw = getSpaceOneN(og, bvec);
+	Space osw = getSpaceOneW(og, bvec);
 	Space osne = getSpaceOneNE(og, bvec);
 	Space osse = getSpaceOneSE(og, bvec);
 	Space osnw = getSpaceOneNW(og, bvec);
@@ -506,7 +510,7 @@ bool checkIfPlayerCanCapture(Space& og, vector<Space>& bvec){ //checks to see if
 	Space tsn = getSpaceTwoN(og, bvec);
 	Space tss = getSpaceTwoS(og, bvec);
 	Space tse = getSpaceTwoE(og, bvec);
-	Space tsw = getSpaceTwoN(og, bvec);
+	Space tsw = getSpaceTwoW(og, bvec);
 	Space tsne = getSpaceTwoNE(og, bvec);
 	Space tsse = getSpaceTwoSE(og, bvec);
 	Space tsnw = getSpaceTwoNW(og, bvec);
@@ -529,7 +533,7 @@ bool checkIfPlayerDestValid(Space& piece, Space& destination, vector<Space>& bve
 	Space osn = getSpaceOneN(destination, bvec);
 	Space oss = getSpaceOneS(destination, bvec);
 	Space ose = getSpaceOneE(destination, bvec);
-	Space osw = getSpaceOneN(destination, bvec);
+	Space osw = getSpaceOneW(destination, bvec);
 	Space osne = getSpaceOneNE(destination, bvec);
 	Space osse = getSpaceOneSE(destination, bvec);
 	Space osnw = getSpaceOneNW(destination, bvec);
@@ -543,7 +547,7 @@ bool checkIfPlayerDestValid(Space& piece, Space& destination, vector<Space>& bve
 	Space tsn = getSpaceTwoN(destination, bvec);
 	Space tss = getSpaceTwoS(destination, bvec);
 	Space tse = getSpaceTwoE(destination, bvec);
-	Space tsw = getSpaceTwoN(destination, bvec);
+	Space tsw = getSpaceTwoW(destination, bvec);
 	Space tsne = getSpaceTwoNE(destination, bvec);
 	Space tsse = getSpaceTwoSE(destination, bvec);
 	Space tsnw = getSpaceTwoNW(destination, bvec);
@@ -568,7 +572,7 @@ bool checkIfPlayerCapValid(Space& piece, Space& destination, vector<Space>& bvec
 	Space osn = getSpaceOneN(destination, bvec);
 	Space oss = getSpaceOneS(destination, bvec);
 	Space ose = getSpaceOneE(destination, bvec);
-	Space osw = getSpaceOneN(destination, bvec);
+	Space osw = getSpaceOneW(destination, bvec);
 	Space osne = getSpaceOneNE(destination, bvec);
 	Space osse = getSpaceOneSE(destination, bvec);
 	Space osnw = getSpaceOneNW(destination, bvec);
@@ -577,7 +581,7 @@ bool checkIfPlayerCapValid(Space& piece, Space& destination, vector<Space>& bvec
 	Space tsn = getSpaceTwoN(destination, bvec);
 	Space tss = getSpaceTwoS(destination, bvec);
 	Space tse = getSpaceTwoE(destination, bvec);
-	Space tsw = getSpaceTwoN(destination, bvec);
+	Space tsw = getSpaceTwoW(destination, bvec);
 	Space tsne = getSpaceTwoNE(destination, bvec);
 	Space tsse = getSpaceTwoSE(destination, bvec);
 	Space tsnw = getSpaceTwoNW(destination, bvec);
@@ -602,7 +606,7 @@ void whiteCapToSpace(Space& piece, Space& destination, vector<Space>& bvec){ //m
 	bvec[piece.vectorNum].color = ' ';
 	bvec[destination.vectorNum].color = 'w';
 	int c = (piece.xCoord - destination.xCoord)/2 + destination.xCoord;
-	char d = char((piece.yCoord - destination.yCoord) / 2 + destination.yCoord);
+	char d = char((int(piece.yCoord) - int(destination.yCoord)) / 2 + int(destination.yCoord));
 	for (Space i : bvec){
 		if (i.xCoord == c && i.yCoord == d) {
 			i.color = ' ';
@@ -665,35 +669,35 @@ vector<Space*> getBlackCaptureArray(vector<Space>& bvec){ //returns a pointer to
 			Space tssw = getSpaceTwoSW(i, bvec);
 
 			if (osn.color == 'w' && tsn.color == ' '){
-				Space* sp1 = &bvec[osn.vectorNum];
+				Space* sp1 = &bvec[tsn.vectorNum];
 				spvec.push_back(sp1);
 			}
-			if (oss.color == 'w' && tsn.color == ' '){
-				Space* sp2 = &bvec[osn.vectorNum];
+			if (oss.color == 'w' && tss.color == ' '){
+				Space* sp2 = &bvec[tss.vectorNum];
 				spvec.push_back(sp2);
 			}
-			if (ose.color == 'w' && tsn.color == ' '){
-				Space* sp3 = &bvec[osn.vectorNum];
+			if (ose.color == 'w' && tse.color == ' '){
+				Space* sp3 = &bvec[tse.vectorNum];
 				spvec.push_back(sp3);
 			}
-			if (osw.color == 'w' && tsn.color == ' '){
-				Space* sp4 = &bvec[osn.vectorNum];
+			if (osw.color == 'w' && tsw.color == ' '){
+				Space* sp4 = &bvec[tsn.vectorNum];
 				spvec.push_back(sp4);
 			}
-			if (osne.color == 'w' && tsn.color == ' '){
-				Space* sp5 = &bvec[osn.vectorNum];
+			if (osne.color == 'w' && tsne.color == ' '){
+				Space* sp5 = &bvec[tsne.vectorNum];
 				spvec.push_back(sp5);
 			}
-			if (osse.color == 'w' && tsn.color == ' '){
-				Space* sp6 = &bvec[osn.vectorNum];
+			if (osse.color == 'w' && tsse.color == ' '){
+				Space* sp6 = &bvec[tsse.vectorNum];
 				spvec.push_back(sp6);
 			}
-			if (osnw.color == 'w' && tsn.color == ' '){
-				Space* sp7 = &bvec[osn.vectorNum];
+			if (osnw.color == 'w' && tsnw.color == ' '){
+				Space* sp7 = &bvec[tsnw.vectorNum];
 				spvec.push_back(sp7);
 			}
-			if (ossw.color == 'w' && tsn.color == ' '){
-				Space* sp8 = &bvec[osn.vectorNum];
+			if (ossw.color == 'w' && tssw.color == ' '){
+				Space* sp8 = &bvec[tssw.vectorNum];
 				spvec.push_back(sp8);
 			}
 		}
@@ -1012,9 +1016,9 @@ void gameDraw(){
 }
 
 //alpha-beta search algorithm
-Space* alphaBetaBestChoice(vector <Space*>& spvec){
-
-}
+//Space* alphaBetaBestChoice(vector <Space*>& spvec){
+//
+//}
 
 //player's turn function
 void playerTurn(){
@@ -1022,14 +1026,13 @@ void playerTurn(){
 	if (checkIfWhiteCanCapture(boardVec)){											//checks if user is able to capture this turn
 		displayBoard(boardVec);
 		string upc = getUserPieceSelect();											//gets the user input
-		while (checkUserInput(upc) == false){ 										//checks to make sure input is valid
-			displayBoard(boardVec); 
+		while (checkUserInput(upc) == false){ 										//checks to make sure input is valid 
 			upc = getUserPieceSelect(); 
 		}
 		Space piece = convertUserInput(upc, boardVec);								//converts user input into a Space
 		while (checkIfPlayerCanCapture(piece, boardVec) == false){					//checks if user Space can capture, and forces player to select a different Space if it cannot
+			upc = getUserPieceSelect();
 			while (checkUserInput(upc) == false){ 
-				displayBoard(boardVec);
 				upc = getUserPieceSelect(); 
 			}
 			piece = convertUserInput(upc, boardVec);
@@ -1037,13 +1040,12 @@ void playerTurn(){
 		displayBoard(boardVec);
 		string ucap = getUserMoveSelect(upc);										//gets the user input
 		while (checkUserInput(ucap) == false){ 										//checks to make sure input is valid
-			displayBoard(boardVec);
 			ucap = getUserMoveSelect(upc);
 		}
 		Space capspot = convertUserInput(ucap, boardVec);							//converts user input into a Space
 		while (checkIfPlayerCapValid(piece, capspot, boardVec) == false){			//checks if user Space is a valid capture space of previous Space, and forces player to select a different Space if it is not
+			ucap = getUserMoveSelect(upc);
 			while (checkUserInput(ucap) == false){ 
-				displayBoard(boardVec);
 				ucap = getUserMoveSelect(upc);
 			}
 			capspot = convertUserInput(ucap, boardVec);
@@ -1054,27 +1056,25 @@ void playerTurn(){
 		displayBoard(boardVec);
 		string upc = getUserPieceSelect();											//gets the user input
 		while (checkUserInput(upc) == false){ 										//checks to make sure input is valid
-			displayBoard(boardVec);
 			upc = getUserPieceSelect(); 
 		}
 		Space piece = convertUserInput(upc, boardVec);								//converts user input into a Space
 		while (checkIfPlayerCanMove(piece, boardVec) == false){						//checks if user Space can capture, and forces player to select a different Space if it cannot
+			upc = getUserPieceSelect();
 			while (checkUserInput(upc) == false){
-				displayBoard(boardVec);
 				upc = getUserPieceSelect(); 
 			}
 			piece = convertUserInput(upc, boardVec);
 		}
 		displayBoard(boardVec);
 		string udst = getUserMoveSelect(upc);										//gets the user input
-		while (checkUserInput(ucap) == false){ 										//checks to make sure input is valid
-			displayBoard(boardVec);
+		while (checkUserInput(udst) == false){ 										//checks to make sure input is valid
 			udst = getUserMoveSelect(upc); 
 		}
 		Space dest = convertUserInput(udst, boardVec);								//converts user input into a Space
 		while (checkIfPlayerDestValid(piece, dest, boardVec) == false){				//checks if user Space is a valid capture space of previous Space, and forces player to select a different Space if it is not
+			udst = getUserMoveSelect(upc);
 			while (checkUserInput(udst) == false){ 
-				displayBoard(boardVec);
 				udst = getUserMoveSelect(upc); 
 			}
 			dest = convertUserInput(udst, boardVec);
@@ -1098,7 +1098,6 @@ void aiTurn(){
 		blackMoveToSpace(spp, boardVec);
 	}
 	humanTurn = true;
-	displayBoard(boardVec);
 }
 
 int main()
