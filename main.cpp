@@ -654,7 +654,7 @@ bool checkIfBlackCanCapture(vector<Space>& bvec){ //checks to see if the ai can 
 	return false;
 }
 
-vector<Space*> getBlackCaptureArray(vector<Space>& bvec){ //returns a pointer to an array with capture moves
+vector<Space*> getBlackCaptureArray(vector<Space>& bvec){  //returns a vector of pointers of potential capture moves
 	vector<Space*> spvec;
 	for (Space i : bvec){
 		if (i.color == 'b'){
@@ -713,7 +713,7 @@ vector<Space*> getBlackCaptureArray(vector<Space>& bvec){ //returns a pointer to
 	return spvec;
 }
 
-vector<Space*> getBlackMoveArray(vector<Space>& bvec){
+vector<Space*> getBlackMoveArray(vector<Space>& bvec){	//returns a vector of pointers of potential non-capture moves
 	vector<Space*> spvec;
 	for (Space i : bvec){
 		if (i.color == 'b'){
@@ -826,7 +826,7 @@ Space* getBlackBestChoice(vector<Space*>& spvec){
 	return spvec[bestChoice];
 }
 
-void blackMoveToSpace(Space* sp, vector<Space>& bvec){
+void blackMoveToSpace(Space* sp, vector<Space>& bvec){	//ai player moves a piece to its selected space
 	Space osn = getSpaceOneN(*sp, bvec);
 	Space oss = getSpaceOneS(*sp, bvec);
 	Space ose = getSpaceOneE(*sp, bvec);
@@ -927,7 +927,7 @@ void blackMoveToSpace(Space* sp, vector<Space>& bvec){
 	}
 }
 
-void blackCapToSpace(Space* sp, vector<Space>& bvec){
+void blackCapToSpace(Space* sp, vector<Space>& bvec){ //ai moves a piece to its selected space and captures an enemy piece
 	Space osn = getSpaceOneN(*sp, bvec);
 	Space oss = getSpaceOneS(*sp, bvec);
 	Space ose = getSpaceOneE(*sp, bvec);
@@ -1027,7 +1027,7 @@ bool aiCheckIfWhiteCanCapture(vector<Space>& bvec){ //computer checks to see if 
 	return false;
 }
 
-vector<Space*> getWhiteCaptureArray(vector<Space>& bvec){ //returns a pointer to an array with capture moves
+vector<Space*> getWhiteCaptureArray(vector<Space>& bvec){ //returns a vector of pointers of potential capture moves
 	vector<Space*> spvec;
 	for (Space i : bvec){
 		if (i.color == 'w'){
@@ -1086,7 +1086,7 @@ vector<Space*> getWhiteCaptureArray(vector<Space>& bvec){ //returns a pointer to
 	return spvec;
 }
 
-vector<Space*> getWhiteMoveArray(vector<Space>& bvec){
+vector<Space*> getWhiteMoveArray(vector<Space>& bvec){	//returns a vector of pointers of potential non-capture moves
 	vector<Space*> spvec;
 	for (Space i : bvec){
 		if (i.color == 'w'){
@@ -1178,7 +1178,7 @@ vector<Space*> getWhiteMoveArray(vector<Space>& bvec){
 	return spvec;
 }
 
-void aiWhiteMoveToSpace(Space* sp, vector<Space>& bvec){
+void aiWhiteMoveToSpace(Space* sp, vector<Space>& bvec){	//ai moves a player's piece to its selected space
 	Space osn = getSpaceOneN(*sp, bvec);
 	Space oss = getSpaceOneS(*sp, bvec);
 	Space ose = getSpaceOneE(*sp, bvec);
@@ -1279,7 +1279,7 @@ void aiWhiteMoveToSpace(Space* sp, vector<Space>& bvec){
 	}
 }
 
-void aiWhiteCapToSpace(Space* sp, vector<Space>& bvec){
+void aiWhiteCapToSpace(Space* sp, vector<Space>& bvec){	//ai moves a player piece to its selected space and captures an enemy piece
 	Space osn = getSpaceOneN(*sp, bvec);
 	Space oss = getSpaceOneS(*sp, bvec);
 	Space ose = getSpaceOneE(*sp, bvec);
@@ -1375,7 +1375,7 @@ void gameDraw(){
 	cout << "\nIt's a draw!\n";
 }
 
-//alpha-beta search algorithm functions
+//alpha-beta search algorithm variables and functions
 int maxDepth;
 int nodeCount;
 int maxPrune;
@@ -1397,7 +1397,7 @@ int boardEval(int wCount, int bCount, vector<Space>& bvec){	//evaluates the scor
 	return score;
 }
 
-treeInfo alphaBetaScore(Space*& spo, vector<Space>& bveco, int nodeDepth, int depthLimit, bool isMaxTurn, int alpha, int beta){
+treeInfo alphaBetaScore(Space*& spo, vector<Space>& bveco, int nodeDepth, int depthLimit, bool isMaxTurn, int alpha, int beta){ //alpha-beta search function
 	vector<Space> bvec = bveco;
 	Space* sp = &bvec[spo->vectorNum];
 	tempNodeCount += 1;
@@ -1411,17 +1411,17 @@ treeInfo alphaBetaScore(Space*& spo, vector<Space>& bveco, int nodeDepth, int de
 		if (i.color == 'w') { whitepc += 1; }
 		if (i.color == 'b') { blackpc += 1; }
 	}
-	if (whitepc == 1 && blackpc == 1) { 
+	if (whitepc == 1 && blackpc == 1) {																					//check for draw
 		ti.score = 0; 
 		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
 		return ti;  
 	}
-	else if ((whitepc > 1 && blackpc == 0) || (bvec[0].color == 'w' && bvec[1].color == 'w')) { 
+	else if ((whitepc > 1 && blackpc == 0) || (bvec[0].color == 'w' && bvec[1].color == 'w')) {							//check for white win
 		ti.score = -1000; 
 		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
 		return ti; 
 	}
-	else if ((blackpc > 1 && whitepc == 0) || (bvec[86].color == 'b' && bvec[87].color == 'b')) { 
+	else if ((blackpc > 1 && whitepc == 0) || (bvec[86].color == 'b' && bvec[87].color == 'b')) {						//check for black win
 		ti.score = 1000; 
 		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
 		return ti; 
@@ -1431,7 +1431,7 @@ treeInfo alphaBetaScore(Space*& spo, vector<Space>& bveco, int nodeDepth, int de
 			if (nodeDepth == depthLimit){
 				if (checkIfBlackCanCapture(bvec)){ blackCapToSpace(sp, bvec); }
 				else { blackMoveToSpace(sp, bvec); }
-				ti.score = boardEval(whitepc, blackpc, bvec);
+				ti.score = boardEval(whitepc, blackpc, bvec);															//evaluation function
 				duration = (clock() - start) / (double)CLOCKS_PER_SEC;
 				return ti;
 			}
@@ -1478,7 +1478,7 @@ treeInfo alphaBetaScore(Space*& spo, vector<Space>& bveco, int nodeDepth, int de
 			if (nodeDepth == depthLimit){
 				if (aiCheckIfWhiteCanCapture(bvec)){ aiWhiteCapToSpace(sp, bvec); }
 				else { aiWhiteMoveToSpace(sp, bvec); }
-				ti.score = boardEval(whitepc, blackpc, bvec);
+				ti.score = boardEval(whitepc, blackpc, bvec);															//evaluation function
 				return ti;
 			}
 			else{
@@ -1528,8 +1528,8 @@ Space* alphaBetaBestChoice(vector<Space*>& spvec){ //displays information regard
 	int bestScore = -1000;
 	int bestIndex = 0;
 	vector<int> scoreVec;
-	start = clock();
-	for (int i = 0;; i++){																//performs iterative deepening on algorithm and returns early results in case the algorithm does not finish in time
+	start = clock();																				//timer starts here
+	for (int i = 0;; i++){																			//performs iterative deepening on algorithm and returns early results in case the algorithm does not finish in time
 		vector<int> depthVec;
 		tempMaxDepth = 0;
 		tempNodeCount = 0;
@@ -1539,14 +1539,14 @@ Space* alphaBetaBestChoice(vector<Space*>& spvec){ //displays information regard
 			treeInfo ti = alphaBetaScore(j, boardVec, 0, i, true, -1000, 1000); 
 			depthVec.push_back(ti.score);
 			if (tempMaxDepth < ti.depth) { tempMaxDepth = ti.depth; }
-			if (duration > 10.0) { break; }
+			if (duration > 10.0) { break; }															//timer ends search here
 		}
 		scoreVec = depthVec;
 		maxDepth = tempMaxDepth;
 		nodeCount = tempNodeCount;
 		maxPrune = tempMaxPrune;
 		minPrune = tempMinPrune;
-		if (i > tempMaxDepth || duration > 10.0) { break; }												//ends iterative deepening loop if depth exceeds max algorithm tree depth
+		if (i > tempMaxDepth || duration > 10.0) { break; }											//ends iterative deepening loop if depth exceeds max algorithm tree depth
 	}
 	for (int i = 0; i < scoreVec.size(); i++){
 		if (bestScore < scoreVec[i]){
@@ -1628,17 +1628,18 @@ void playerTurn(){
 	displayBoard(boardVec);
 }
 
+//computer's turn function
 void aiTurn(){
 	cout << "\nComputer's turn.\n";
-	if (checkIfBlackCanCapture(boardVec)){
+	if (checkIfBlackCanCapture(boardVec)){										//checks if AI can capture this turn
 		cout << "Computer is obligated to capture an enemy piece.\n\n";
-		vector<Space*> spVec = getBlackCaptureArray(boardVec);
-		Space* spp = alphaBetaBestChoice(spVec);
+		vector<Space*> spVec = getBlackCaptureArray(boardVec);					//gets vector of potential capture moves
+		Space* spp = alphaBetaBestChoice(spVec);								//runs alpha-beta search
 		blackCapToSpace(spp, boardVec);
 	}
 	else{
-		vector<Space*> spVec = getBlackMoveArray(boardVec);
-		Space* spp = alphaBetaBestChoice(spVec);
+		vector<Space*> spVec = getBlackMoveArray(boardVec);						//gets vector of potential non-capture moves
+		Space* spp = alphaBetaBestChoice(spVec);								//runs alpha-beta search
 		blackMoveToSpace(spp, boardVec);
 	}
 	humanTurn = true;
@@ -1648,7 +1649,7 @@ int main()
 {
 	initVec(boardVec);
 	
-	cout << "\nWelcome to Mini-Camelot! Please read the readme before you play.\n";
+	cout << "\nWelcome to Mini-Camelot! Please read the instructions before you play.\n";
 	
 	while (gameState == ONGOING)
 	{
