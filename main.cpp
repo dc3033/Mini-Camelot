@@ -630,7 +630,7 @@ bool checkIfBlackCanCapture(vector<Space>& bvec){ //checks to see if the ai can 
 			Space osn = getSpaceOneN(i, bvec);
 			Space oss = getSpaceOneS(i, bvec);
 			Space ose = getSpaceOneE(i, bvec);
-			Space osw = getSpaceOneN(i, bvec);
+			Space osw = getSpaceOneW(i, bvec);
 			Space osne = getSpaceOneNE(i, bvec);
 			Space osse = getSpaceOneSE(i, bvec);
 			Space osnw = getSpaceOneNW(i, bvec);
@@ -639,7 +639,7 @@ bool checkIfBlackCanCapture(vector<Space>& bvec){ //checks to see if the ai can 
 			Space tsn = getSpaceTwoN(i, bvec);
 			Space tss = getSpaceTwoS(i, bvec);
 			Space tse = getSpaceTwoE(i, bvec);
-			Space tsw = getSpaceTwoN(i, bvec);
+			Space tsw = getSpaceTwoW(i, bvec);
 			Space tsne = getSpaceTwoNE(i, bvec);
 			Space tsse = getSpaceTwoSE(i, bvec);
 			Space tsnw = getSpaceTwoNW(i, bvec);
@@ -661,7 +661,7 @@ vector<Space*> getBlackCaptureArray(vector<Space>& bvec){  //returns a vector of
 			Space osn = getSpaceOneN(i, bvec);
 			Space oss = getSpaceOneS(i, bvec);
 			Space ose = getSpaceOneE(i, bvec);
-			Space osw = getSpaceOneN(i, bvec);
+			Space osw = getSpaceOneW(i, bvec);
 			Space osne = getSpaceOneNE(i, bvec);
 			Space osse = getSpaceOneSE(i, bvec);
 			Space osnw = getSpaceOneNW(i, bvec);
@@ -670,7 +670,7 @@ vector<Space*> getBlackCaptureArray(vector<Space>& bvec){  //returns a vector of
 			Space tsn = getSpaceTwoN(i, bvec);
 			Space tss = getSpaceTwoS(i, bvec);
 			Space tse = getSpaceTwoE(i, bvec);
-			Space tsw = getSpaceTwoN(i, bvec);
+			Space tsw = getSpaceTwoW(i, bvec);
 			Space tsne = getSpaceTwoNE(i, bvec);
 			Space tsse = getSpaceTwoSE(i, bvec);
 			Space tsnw = getSpaceTwoNW(i, bvec);
@@ -689,7 +689,7 @@ vector<Space*> getBlackCaptureArray(vector<Space>& bvec){  //returns a vector of
 				spvec.push_back(sp3);
 			}
 			if (osw.color == 'w' && tsw.color == ' '){
-				Space* sp4 = &bvec[tsn.vectorNum];
+				Space* sp4 = &bvec[tsw.vectorNum];
 				spvec.push_back(sp4);
 			}
 			if (osne.color == 'w' && tsne.color == ' '){
@@ -720,7 +720,7 @@ vector<Space*> getBlackMoveArray(vector<Space>& bvec){	//returns a vector of poi
 			Space osn = getSpaceOneN(i, bvec);
 			Space oss = getSpaceOneS(i, bvec);
 			Space ose = getSpaceOneE(i, bvec);
-			Space osw = getSpaceOneN(i, bvec);
+			Space osw = getSpaceOneW(i, bvec);
 			Space osne = getSpaceOneNE(i, bvec);
 			Space osse = getSpaceOneSE(i, bvec);
 			Space osnw = getSpaceOneNW(i, bvec);
@@ -729,7 +729,7 @@ vector<Space*> getBlackMoveArray(vector<Space>& bvec){	//returns a vector of poi
 			Space tsn = getSpaceTwoN(i, bvec);
 			Space tss = getSpaceTwoS(i, bvec);
 			Space tse = getSpaceTwoE(i, bvec);
-			Space tsw = getSpaceTwoN(i, bvec);
+			Space tsw = getSpaceTwoW(i, bvec);
 			Space tsne = getSpaceTwoNE(i, bvec);
 			Space tsse = getSpaceTwoSE(i, bvec);
 			Space tsnw = getSpaceTwoNW(i, bvec);
@@ -740,64 +740,64 @@ vector<Space*> getBlackMoveArray(vector<Space>& bvec){	//returns a vector of poi
 				spvec.push_back(sp1);
 			}
 			if (oss.color == ' '){
-				Space* sp2 = &bvec[osn.vectorNum];
+				Space* sp2 = &bvec[oss.vectorNum];
 				spvec.push_back(sp2);
 			}
 			if (ose.color == ' '){
-				Space* sp3 = &bvec[osn.vectorNum];
+				Space* sp3 = &bvec[ose.vectorNum];
 				spvec.push_back(sp3);
 			}
 			if (osw.color == ' '){
-				Space* sp4 = &bvec[osn.vectorNum];
+				Space* sp4 = &bvec[osw.vectorNum];
 				spvec.push_back(sp4);
 			}
 			if (osne.color == ' '){
-				Space* sp5 = &bvec[osn.vectorNum];
+				Space* sp5 = &bvec[osne.vectorNum];
 				spvec.push_back(sp5);
 			}
 			if (osse.color == ' '){
-				Space* sp6 = &bvec[osn.vectorNum];
+				Space* sp6 = &bvec[osse.vectorNum];
 				spvec.push_back(sp6);
 			}
 			if (osnw.color == ' '){
-				Space* sp7 = &bvec[osn.vectorNum];
+				Space* sp7 = &bvec[osnw.vectorNum];
 				spvec.push_back(sp7);
 			}
 			if (ossw.color == ' '){
-				Space* sp8 = &bvec[osn.vectorNum];
+				Space* sp8 = &bvec[ossw.vectorNum];
 				spvec.push_back(sp8);
 			}
 
 			if (osn.color == 'b' && tsn.color == ' '){
-				Space* sp9 = &bvec[osn.vectorNum];
+				Space* sp9 = &bvec[tsn.vectorNum];
 				spvec.push_back(sp9);
 			}
-			if (oss.color == 'b' && tsn.color == ' '){
-				Space* sp10 = &bvec[osn.vectorNum];
+			if (oss.color == 'b' && tss.color == ' '){
+				Space* sp10 = &bvec[tss.vectorNum];
 				spvec.push_back(sp10);
 			}
-			if (ose.color == 'b' && tsn.color == ' '){
-				Space* sp11 = &bvec[osn.vectorNum];
+			if (ose.color == 'b' && tse.color == ' '){
+				Space* sp11 = &bvec[tse.vectorNum];
 				spvec.push_back(sp11);
 			}
-			if (osw.color == 'b' && tsn.color == ' '){
-				Space* sp12 = &bvec[osn.vectorNum];
+			if (osw.color == 'b' && tsw.color == ' '){
+				Space* sp12 = &bvec[tsw.vectorNum];
 				spvec.push_back(sp12);
 			}
-			if (osne.color == 'b' && tsn.color == ' '){
-				Space* sp13 = &bvec[osn.vectorNum];
+			if (osne.color == 'b' && tsne.color == ' '){
+				Space* sp13 = &bvec[tsne.vectorNum];
 				spvec.push_back(sp13);
 			}
-			if (osse.color == 'b' && tsn.color == ' '){
-				Space* sp14 = &bvec[osn.vectorNum];
+			if (osse.color == 'b' && tsse.color == ' '){
+				Space* sp14 = &bvec[tsse.vectorNum];
 				spvec.push_back(sp14);
 			}
-			if (osnw.color == 'b' && tsn.color == ' '){
-				Space* sp15 = &bvec[osn.vectorNum];
+			if (osnw.color == 'b' && tsnw.color == ' '){
+				Space* sp15 = &bvec[tsnw.vectorNum];
 				spvec.push_back(sp15);
 			}
-			if (ossw.color == 'b' && tsn.color == ' '){
-				Space* sp16 = &bvec[osn.vectorNum];
+			if (ossw.color == 'b' && tssw.color == ' '){
+				Space* sp16 = &bvec[tssw.vectorNum];
 				spvec.push_back(sp16);
 			}
 		}
@@ -830,7 +830,7 @@ void blackMoveToSpace(Space* sp, vector<Space>& bvec){	//ai player moves a piece
 	Space osn = getSpaceOneN(*sp, bvec);
 	Space oss = getSpaceOneS(*sp, bvec);
 	Space ose = getSpaceOneE(*sp, bvec);
-	Space osw = getSpaceOneN(*sp, bvec);
+	Space osw = getSpaceOneW(*sp, bvec);
 	Space osne = getSpaceOneNE(*sp, bvec);
 	Space osse = getSpaceOneSE(*sp, bvec);
 	Space osnw = getSpaceOneNW(*sp, bvec);
@@ -839,7 +839,7 @@ void blackMoveToSpace(Space* sp, vector<Space>& bvec){	//ai player moves a piece
 	Space tsn = getSpaceTwoN(*sp, bvec);
 	Space tss = getSpaceTwoS(*sp, bvec);
 	Space tse = getSpaceTwoE(*sp, bvec);
-	Space tsw = getSpaceTwoN(*sp, bvec);
+	Space tsw = getSpaceTwoW(*sp, bvec);
 	Space tsne = getSpaceTwoNE(*sp, bvec);
 	Space tsse = getSpaceTwoSE(*sp, bvec);
 	Space tsnw = getSpaceTwoNW(*sp, bvec);
@@ -931,7 +931,7 @@ void blackCapToSpace(Space* sp, vector<Space>& bvec){ //ai moves a piece to its 
 	Space osn = getSpaceOneN(*sp, bvec);
 	Space oss = getSpaceOneS(*sp, bvec);
 	Space ose = getSpaceOneE(*sp, bvec);
-	Space osw = getSpaceOneN(*sp, bvec);
+	Space osw = getSpaceOneW(*sp, bvec);
 	Space osne = getSpaceOneNE(*sp, bvec);
 	Space osse = getSpaceOneSE(*sp, bvec);
 	Space osnw = getSpaceOneNW(*sp, bvec);
@@ -940,7 +940,7 @@ void blackCapToSpace(Space* sp, vector<Space>& bvec){ //ai moves a piece to its 
 	Space tsn = getSpaceTwoN(*sp, bvec);
 	Space tss = getSpaceTwoS(*sp, bvec);
 	Space tse = getSpaceTwoE(*sp, bvec);
-	Space tsw = getSpaceTwoN(*sp, bvec);
+	Space tsw = getSpaceTwoW(*sp, bvec);
 	Space tsne = getSpaceTwoNE(*sp, bvec);
 	Space tsse = getSpaceTwoSE(*sp, bvec);
 	Space tsnw = getSpaceTwoNW(*sp, bvec);
@@ -1034,7 +1034,7 @@ vector<Space*> getWhiteCaptureArray(vector<Space>& bvec){ //returns a vector of 
 			Space osn = getSpaceOneN(i, bvec);
 			Space oss = getSpaceOneS(i, bvec);
 			Space ose = getSpaceOneE(i, bvec);
-			Space osw = getSpaceOneN(i, bvec);
+			Space osw = getSpaceOneW(i, bvec);
 			Space osne = getSpaceOneNE(i, bvec);
 			Space osse = getSpaceOneSE(i, bvec);
 			Space osnw = getSpaceOneNW(i, bvec);
@@ -1043,7 +1043,7 @@ vector<Space*> getWhiteCaptureArray(vector<Space>& bvec){ //returns a vector of 
 			Space tsn = getSpaceTwoN(i, bvec);
 			Space tss = getSpaceTwoS(i, bvec);
 			Space tse = getSpaceTwoE(i, bvec);
-			Space tsw = getSpaceTwoN(i, bvec);
+			Space tsw = getSpaceTwoW(i, bvec);
 			Space tsne = getSpaceTwoNE(i, bvec);
 			Space tsse = getSpaceTwoSE(i, bvec);
 			Space tsnw = getSpaceTwoNW(i, bvec);
@@ -1062,7 +1062,7 @@ vector<Space*> getWhiteCaptureArray(vector<Space>& bvec){ //returns a vector of 
 				spvec.push_back(sp3);
 			}
 			if (osw.color == 'b' && tsw.color == ' '){
-				Space* sp4 = &bvec[tsn.vectorNum];
+				Space* sp4 = &bvec[tsw.vectorNum];
 				spvec.push_back(sp4);
 			}
 			if (osne.color == 'b' && tsne.color == ' '){
@@ -1093,7 +1093,7 @@ vector<Space*> getWhiteMoveArray(vector<Space>& bvec){	//returns a vector of poi
 			Space osn = getSpaceOneN(i, bvec);
 			Space oss = getSpaceOneS(i, bvec);
 			Space ose = getSpaceOneE(i, bvec);
-			Space osw = getSpaceOneN(i, bvec);
+			Space osw = getSpaceOneW(i, bvec);
 			Space osne = getSpaceOneNE(i, bvec);
 			Space osse = getSpaceOneSE(i, bvec);
 			Space osnw = getSpaceOneNW(i, bvec);
@@ -1102,7 +1102,7 @@ vector<Space*> getWhiteMoveArray(vector<Space>& bvec){	//returns a vector of poi
 			Space tsn = getSpaceTwoN(i, bvec);
 			Space tss = getSpaceTwoS(i, bvec);
 			Space tse = getSpaceTwoE(i, bvec);
-			Space tsw = getSpaceTwoN(i, bvec);
+			Space tsw = getSpaceTwoW(i, bvec);
 			Space tsne = getSpaceTwoNE(i, bvec);
 			Space tsse = getSpaceTwoSE(i, bvec);
 			Space tsnw = getSpaceTwoNW(i, bvec);
@@ -1113,64 +1113,64 @@ vector<Space*> getWhiteMoveArray(vector<Space>& bvec){	//returns a vector of poi
 				spvec.push_back(sp1);
 			}
 			if (oss.color == ' '){
-				Space* sp2 = &bvec[osn.vectorNum];
+				Space* sp2 = &bvec[oss.vectorNum];
 				spvec.push_back(sp2);
 			}
 			if (ose.color == ' '){
-				Space* sp3 = &bvec[osn.vectorNum];
+				Space* sp3 = &bvec[ose.vectorNum];
 				spvec.push_back(sp3);
 			}
 			if (osw.color == ' '){
-				Space* sp4 = &bvec[osn.vectorNum];
+				Space* sp4 = &bvec[osw.vectorNum];
 				spvec.push_back(sp4);
 			}
 			if (osne.color == ' '){
-				Space* sp5 = &bvec[osn.vectorNum];
+				Space* sp5 = &bvec[osne.vectorNum];
 				spvec.push_back(sp5);
 			}
 			if (osse.color == ' '){
-				Space* sp6 = &bvec[osn.vectorNum];
+				Space* sp6 = &bvec[osse.vectorNum];
 				spvec.push_back(sp6);
 			}
 			if (osnw.color == ' '){
-				Space* sp7 = &bvec[osn.vectorNum];
+				Space* sp7 = &bvec[osnw.vectorNum];
 				spvec.push_back(sp7);
 			}
 			if (ossw.color == ' '){
-				Space* sp8 = &bvec[osn.vectorNum];
+				Space* sp8 = &bvec[ossw.vectorNum];
 				spvec.push_back(sp8);
 			}
 
 			if (osn.color == 'w' && tsn.color == ' '){
-				Space* sp9 = &bvec[osn.vectorNum];
+				Space* sp9 = &bvec[tsn.vectorNum];
 				spvec.push_back(sp9);
 			}
-			if (oss.color == 'w' && tsn.color == ' '){
-				Space* sp10 = &bvec[osn.vectorNum];
+			if (oss.color == 'w' && tss.color == ' '){
+				Space* sp10 = &bvec[tss.vectorNum];
 				spvec.push_back(sp10);
 			}
-			if (ose.color == 'w' && tsn.color == ' '){
-				Space* sp11 = &bvec[osn.vectorNum];
+			if (ose.color == 'w' && tse.color == ' '){
+				Space* sp11 = &bvec[tse.vectorNum];
 				spvec.push_back(sp11);
 			}
-			if (osw.color == 'w' && tsn.color == ' '){
-				Space* sp12 = &bvec[osn.vectorNum];
+			if (osw.color == 'w' && tsw.color == ' '){
+				Space* sp12 = &bvec[tsw.vectorNum];
 				spvec.push_back(sp12);
 			}
-			if (osne.color == 'w' && tsn.color == ' '){
-				Space* sp13 = &bvec[osn.vectorNum];
+			if (osne.color == 'w' && tsne.color == ' '){
+				Space* sp13 = &bvec[tsne.vectorNum];
 				spvec.push_back(sp13);
 			}
-			if (osse.color == 'w' && tsn.color == ' '){
-				Space* sp14 = &bvec[osn.vectorNum];
+			if (osse.color == 'w' && tsse.color == ' '){
+				Space* sp14 = &bvec[tsse.vectorNum];
 				spvec.push_back(sp14);
 			}
-			if (osnw.color == 'w' && tsn.color == ' '){
-				Space* sp15 = &bvec[osn.vectorNum];
+			if (osnw.color == 'w' && tsnw.color == ' '){
+				Space* sp15 = &bvec[tsnw.vectorNum];
 				spvec.push_back(sp15);
 			}
-			if (ossw.color == 'w' && tsn.color == ' '){
-				Space* sp16 = &bvec[osn.vectorNum];
+			if (ossw.color == 'w' && tssw.color == ' '){
+				Space* sp16 = &bvec[tssw.vectorNum];
 				spvec.push_back(sp16);
 			}
 		}
@@ -1182,7 +1182,7 @@ void aiWhiteMoveToSpace(Space* sp, vector<Space>& bvec){	//ai moves a player's p
 	Space osn = getSpaceOneN(*sp, bvec);
 	Space oss = getSpaceOneS(*sp, bvec);
 	Space ose = getSpaceOneE(*sp, bvec);
-	Space osw = getSpaceOneN(*sp, bvec);
+	Space osw = getSpaceOneW(*sp, bvec);
 	Space osne = getSpaceOneNE(*sp, bvec);
 	Space osse = getSpaceOneSE(*sp, bvec);
 	Space osnw = getSpaceOneNW(*sp, bvec);
@@ -1191,7 +1191,7 @@ void aiWhiteMoveToSpace(Space* sp, vector<Space>& bvec){	//ai moves a player's p
 	Space tsn = getSpaceTwoN(*sp, bvec);
 	Space tss = getSpaceTwoS(*sp, bvec);
 	Space tse = getSpaceTwoE(*sp, bvec);
-	Space tsw = getSpaceTwoN(*sp, bvec);
+	Space tsw = getSpaceTwoW(*sp, bvec);
 	Space tsne = getSpaceTwoNE(*sp, bvec);
 	Space tsse = getSpaceTwoSE(*sp, bvec);
 	Space tsnw = getSpaceTwoNW(*sp, bvec);
@@ -1283,7 +1283,7 @@ void aiWhiteCapToSpace(Space* sp, vector<Space>& bvec){	//ai moves a player piec
 	Space osn = getSpaceOneN(*sp, bvec);
 	Space oss = getSpaceOneS(*sp, bvec);
 	Space ose = getSpaceOneE(*sp, bvec);
-	Space osw = getSpaceOneN(*sp, bvec);
+	Space osw = getSpaceOneW(*sp, bvec);
 	Space osne = getSpaceOneNE(*sp, bvec);
 	Space osse = getSpaceOneSE(*sp, bvec);
 	Space osnw = getSpaceOneNW(*sp, bvec);
@@ -1292,7 +1292,7 @@ void aiWhiteCapToSpace(Space* sp, vector<Space>& bvec){	//ai moves a player piec
 	Space tsn = getSpaceTwoN(*sp, bvec);
 	Space tss = getSpaceTwoS(*sp, bvec);
 	Space tse = getSpaceTwoE(*sp, bvec);
-	Space tsw = getSpaceTwoN(*sp, bvec);
+	Space tsw = getSpaceTwoW(*sp, bvec);
 	Space tsne = getSpaceTwoNE(*sp, bvec);
 	Space tsse = getSpaceTwoSE(*sp, bvec);
 	Space tsnw = getSpaceTwoNW(*sp, bvec);
@@ -1580,7 +1580,7 @@ void playerTurn(){
 			}
 			piece = convertUserInput(upc, boardVec);
 		}
-		displayBoard(boardVec);
+		//displayBoard(boardVec);
 		string ucap = getUserMoveSelect(upc);										//gets the user input
 		while (checkUserInput(ucap) == false){ 										//checks to make sure input is valid
 			ucap = getUserMoveSelect(upc);
@@ -1609,7 +1609,7 @@ void playerTurn(){
 			}
 			piece = convertUserInput(upc, boardVec);
 		}
-		displayBoard(boardVec);
+		//diplayBoard(boardVec);
 		string udst = getUserMoveSelect(upc);										//gets the user input
 		while (checkUserInput(udst) == false){ 										//checks to make sure input is valid
 			udst = getUserMoveSelect(upc); 
