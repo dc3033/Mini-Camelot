@@ -3,12 +3,13 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
+#include <cstdio>
+#include <ctime>
 
 using namespace std;
 
 auto humanTurn = true;
-
-auto scoreMin = 100, scoreMax = 0, maxDepth = 0, nodeCount = 0, maxPruneCount = 0, minPruneCount = 0;
 
 enum GameState {ONGOING, DRAW, BLACK_WIN, WHITE_WIN};
 
@@ -21,6 +22,13 @@ struct Space{ /*object that gives info on what is in a space on the board*/
 	char yCoord;
 	int vectorNum;
 	bool isCastle;
+
+};
+
+struct treeInfo{ /*object that contains the best score of the game tree and the max depth of the game tree reached*/
+
+	int score;
+	int depth = 0;
 
 };
 
@@ -607,9 +615,9 @@ void whiteCapToSpace(Space& piece, Space& destination, vector<Space>& bvec){ //m
 	bvec[destination.vectorNum].color = 'w';
 	int c = (piece.xCoord - destination.xCoord)/2 + destination.xCoord;
 	char d = char((int(piece.yCoord) - int(destination.yCoord)) / 2 + int(destination.yCoord));
-	for (Space i : bvec){
-		if (i.xCoord == c && i.yCoord == d) {
-			i.color = ' ';
+	for (int i = 0; i < 87; i++){
+		if (bvec[i].xCoord == c && bvec[i].yCoord == d) {
+			bvec[i].color = ' ';
 			return;
 		}
 	}
@@ -988,13 +996,365 @@ void blackCapToSpace(Space* sp, vector<Space>& bvec){
 	}
 }
 
+//white (ai generated) turn and input checks for alpha beta algorithm
+bool aiCheckIfWhiteCanCapture(vector<Space>& bvec){ //computer checks to see if the player can capture an enemy piece
+	for (Space i : bvec){
+		if (i.color == 'w'){
+			Space osn = getSpaceOneN(i, bvec);
+			Space oss = getSpaceOneS(i, bvec);
+			Space ose = getSpaceOneE(i, bvec);
+			Space osw = getSpaceOneW(i, bvec);
+			Space osne = getSpaceOneNE(i, bvec);
+			Space osse = getSpaceOneSE(i, bvec);
+			Space osnw = getSpaceOneNW(i, bvec);
+			Space ossw = getSpaceOneSW(i, bvec);
+
+			Space tsn = getSpaceTwoN(i, bvec);
+			Space tss = getSpaceTwoS(i, bvec);
+			Space tse = getSpaceTwoE(i, bvec);
+			Space tsw = getSpaceTwoW(i, bvec);
+			Space tsne = getSpaceTwoNE(i, bvec);
+			Space tsse = getSpaceTwoSE(i, bvec);
+			Space tsnw = getSpaceTwoNW(i, bvec);
+			Space tssw = getSpaceTwoSW(i, bvec);
+
+			if ((osn.color == 'b' && tsn.color == ' ') || (oss.color == 'b' && tss.color == ' ') || (ose.color == 'b' && tse.color == ' ') || (osw.color == 'b' && tsw.color == ' ') ||
+				(osne.color == 'b' && tsne.color == ' ') || (osse.color == 'b' && tsse.color == ' ') || (osnw.color == 'b' && tsnw.color == ' ') || (ossw.color == 'b' && tssw.color == ' ')){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+vector<Space*> getWhiteCaptureArray(vector<Space>& bvec){ //returns a pointer to an array with capture moves
+	vector<Space*> spvec;
+	for (Space i : bvec){
+		if (i.color == 'w'){
+			Space osn = getSpaceOneN(i, bvec);
+			Space oss = getSpaceOneS(i, bvec);
+			Space ose = getSpaceOneE(i, bvec);
+			Space osw = getSpaceOneN(i, bvec);
+			Space osne = getSpaceOneNE(i, bvec);
+			Space osse = getSpaceOneSE(i, bvec);
+			Space osnw = getSpaceOneNW(i, bvec);
+			Space ossw = getSpaceOneSW(i, bvec);
+
+			Space tsn = getSpaceTwoN(i, bvec);
+			Space tss = getSpaceTwoS(i, bvec);
+			Space tse = getSpaceTwoE(i, bvec);
+			Space tsw = getSpaceTwoN(i, bvec);
+			Space tsne = getSpaceTwoNE(i, bvec);
+			Space tsse = getSpaceTwoSE(i, bvec);
+			Space tsnw = getSpaceTwoNW(i, bvec);
+			Space tssw = getSpaceTwoSW(i, bvec);
+
+			if (osn.color == 'b' && tsn.color == ' '){
+				Space* sp1 = &bvec[tsn.vectorNum];
+				spvec.push_back(sp1);
+			}
+			if (oss.color == 'b' && tss.color == ' '){
+				Space* sp2 = &bvec[tss.vectorNum];
+				spvec.push_back(sp2);
+			}
+			if (ose.color == 'b' && tse.color == ' '){
+				Space* sp3 = &bvec[tse.vectorNum];
+				spvec.push_back(sp3);
+			}
+			if (osw.color == 'b' && tsw.color == ' '){
+				Space* sp4 = &bvec[tsn.vectorNum];
+				spvec.push_back(sp4);
+			}
+			if (osne.color == 'b' && tsne.color == ' '){
+				Space* sp5 = &bvec[tsne.vectorNum];
+				spvec.push_back(sp5);
+			}
+			if (osse.color == 'b' && tsse.color == ' '){
+				Space* sp6 = &bvec[tsse.vectorNum];
+				spvec.push_back(sp6);
+			}
+			if (osnw.color == 'b' && tsnw.color == ' '){
+				Space* sp7 = &bvec[tsnw.vectorNum];
+				spvec.push_back(sp7);
+			}
+			if (ossw.color == 'b' && tssw.color == ' '){
+				Space* sp8 = &bvec[tssw.vectorNum];
+				spvec.push_back(sp8);
+			}
+		}
+	}
+	return spvec;
+}
+
+vector<Space*> getWhiteMoveArray(vector<Space>& bvec){
+	vector<Space*> spvec;
+	for (Space i : bvec){
+		if (i.color == 'w'){
+			Space osn = getSpaceOneN(i, bvec);
+			Space oss = getSpaceOneS(i, bvec);
+			Space ose = getSpaceOneE(i, bvec);
+			Space osw = getSpaceOneN(i, bvec);
+			Space osne = getSpaceOneNE(i, bvec);
+			Space osse = getSpaceOneSE(i, bvec);
+			Space osnw = getSpaceOneNW(i, bvec);
+			Space ossw = getSpaceOneSW(i, bvec);
+
+			Space tsn = getSpaceTwoN(i, bvec);
+			Space tss = getSpaceTwoS(i, bvec);
+			Space tse = getSpaceTwoE(i, bvec);
+			Space tsw = getSpaceTwoN(i, bvec);
+			Space tsne = getSpaceTwoNE(i, bvec);
+			Space tsse = getSpaceTwoSE(i, bvec);
+			Space tsnw = getSpaceTwoNW(i, bvec);
+			Space tssw = getSpaceTwoSW(i, bvec);
+
+			if (osn.color == ' '){
+				Space* sp1 = &bvec[osn.vectorNum];
+				spvec.push_back(sp1);
+			}
+			if (oss.color == ' '){
+				Space* sp2 = &bvec[osn.vectorNum];
+				spvec.push_back(sp2);
+			}
+			if (ose.color == ' '){
+				Space* sp3 = &bvec[osn.vectorNum];
+				spvec.push_back(sp3);
+			}
+			if (osw.color == ' '){
+				Space* sp4 = &bvec[osn.vectorNum];
+				spvec.push_back(sp4);
+			}
+			if (osne.color == ' '){
+				Space* sp5 = &bvec[osn.vectorNum];
+				spvec.push_back(sp5);
+			}
+			if (osse.color == ' '){
+				Space* sp6 = &bvec[osn.vectorNum];
+				spvec.push_back(sp6);
+			}
+			if (osnw.color == ' '){
+				Space* sp7 = &bvec[osn.vectorNum];
+				spvec.push_back(sp7);
+			}
+			if (ossw.color == ' '){
+				Space* sp8 = &bvec[osn.vectorNum];
+				spvec.push_back(sp8);
+			}
+
+			if (osn.color == 'w' && tsn.color == ' '){
+				Space* sp9 = &bvec[osn.vectorNum];
+				spvec.push_back(sp9);
+			}
+			if (oss.color == 'w' && tsn.color == ' '){
+				Space* sp10 = &bvec[osn.vectorNum];
+				spvec.push_back(sp10);
+			}
+			if (ose.color == 'w' && tsn.color == ' '){
+				Space* sp11 = &bvec[osn.vectorNum];
+				spvec.push_back(sp11);
+			}
+			if (osw.color == 'w' && tsn.color == ' '){
+				Space* sp12 = &bvec[osn.vectorNum];
+				spvec.push_back(sp12);
+			}
+			if (osne.color == 'w' && tsn.color == ' '){
+				Space* sp13 = &bvec[osn.vectorNum];
+				spvec.push_back(sp13);
+			}
+			if (osse.color == 'w' && tsn.color == ' '){
+				Space* sp14 = &bvec[osn.vectorNum];
+				spvec.push_back(sp14);
+			}
+			if (osnw.color == 'w' && tsn.color == ' '){
+				Space* sp15 = &bvec[osn.vectorNum];
+				spvec.push_back(sp15);
+			}
+			if (ossw.color == 'w' && tsn.color == ' '){
+				Space* sp16 = &bvec[osn.vectorNum];
+				spvec.push_back(sp16);
+			}
+		}
+	}
+	return spvec;
+}
+
+void aiWhiteMoveToSpace(Space* sp, vector<Space>& bvec){
+	Space osn = getSpaceOneN(*sp, bvec);
+	Space oss = getSpaceOneS(*sp, bvec);
+	Space ose = getSpaceOneE(*sp, bvec);
+	Space osw = getSpaceOneN(*sp, bvec);
+	Space osne = getSpaceOneNE(*sp, bvec);
+	Space osse = getSpaceOneSE(*sp, bvec);
+	Space osnw = getSpaceOneNW(*sp, bvec);
+	Space ossw = getSpaceOneSW(*sp, bvec);
+
+	Space tsn = getSpaceTwoN(*sp, bvec);
+	Space tss = getSpaceTwoS(*sp, bvec);
+	Space tse = getSpaceTwoE(*sp, bvec);
+	Space tsw = getSpaceTwoN(*sp, bvec);
+	Space tsne = getSpaceTwoNE(*sp, bvec);
+	Space tsse = getSpaceTwoSE(*sp, bvec);
+	Space tsnw = getSpaceTwoNW(*sp, bvec);
+	Space tssw = getSpaceTwoSW(*sp, bvec);
+
+	if (osn.color == 'w'){
+		bvec[osn.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (oss.color == 'w'){
+		bvec[oss.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (ose.color == 'w'){
+		bvec[ose.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osw.color == 'w'){
+		bvec[osw.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osne.color == 'w'){
+		bvec[osne.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osse.color == 'w'){
+		bvec[osse.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osnw.color == 'w'){
+		bvec[osnw.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (ossw.color == 'w'){
+		bvec[ossw.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osn.color == 'w' && tsn.color == 'w'){
+		bvec[tsn.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (oss.color == 'w' && tss.color == 'w'){
+		bvec[tss.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (ose.color == 'w' && tse.color == 'w'){
+		bvec[tse.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osw.color == 'w' && tsw.color == 'w'){
+		bvec[tsw.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osne.color == 'w' && tsne.color == 'w'){
+		bvec[tsne.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osse.color == 'w' && tsse.color == 'w'){
+		bvec[tsse.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osnw.color == 'w' && tsnw.color == 'w'){
+		bvec[tsnw.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (ossw.color == 'w' && tssw.color == 'w'){
+		bvec[tssw.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+}
+
+void aiWhiteCapToSpace(Space* sp, vector<Space>& bvec){
+	Space osn = getSpaceOneN(*sp, bvec);
+	Space oss = getSpaceOneS(*sp, bvec);
+	Space ose = getSpaceOneE(*sp, bvec);
+	Space osw = getSpaceOneN(*sp, bvec);
+	Space osne = getSpaceOneNE(*sp, bvec);
+	Space osse = getSpaceOneSE(*sp, bvec);
+	Space osnw = getSpaceOneNW(*sp, bvec);
+	Space ossw = getSpaceOneSW(*sp, bvec);
+
+	Space tsn = getSpaceTwoN(*sp, bvec);
+	Space tss = getSpaceTwoS(*sp, bvec);
+	Space tse = getSpaceTwoE(*sp, bvec);
+	Space tsw = getSpaceTwoN(*sp, bvec);
+	Space tsne = getSpaceTwoNE(*sp, bvec);
+	Space tsse = getSpaceTwoSE(*sp, bvec);
+	Space tsnw = getSpaceTwoNW(*sp, bvec);
+	Space tssw = getSpaceTwoSW(*sp, bvec);
+
+	if (osn.color == 'b' && tsn.color == 'w'){
+		bvec[tsn.vectorNum].color = ' ';
+		bvec[osn.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (oss.color == 'b' && tss.color == 'w'){
+		bvec[tss.vectorNum].color = ' ';
+		bvec[oss.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (ose.color == 'b' && tse.color == 'w'){
+		bvec[tse.vectorNum].color = ' ';
+		bvec[ose.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osw.color == 'b' && tsw.color == 'w'){
+		bvec[tsw.vectorNum].color = ' ';
+		bvec[osw.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osne.color == 'b' && tsne.color == 'w'){
+		bvec[tsne.vectorNum].color = ' ';
+		bvec[osne.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osse.color == 'b' && tsse.color == 'w'){
+		bvec[tsse.vectorNum].color = ' ';
+		bvec[osse.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (osnw.color == 'b' && tsnw.color == 'w'){
+		bvec[tsnw.vectorNum].color = ' ';
+		bvec[osnw.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+	if (ossw.color == 'b' && tssw.color == 'w'){
+		bvec[tssw.vectorNum].color = ' ';
+		bvec[ossw.vectorNum].color = ' ';
+		sp->color = 'w';
+		return;
+	}
+}
+
 //checks the state of the game (ongoing, win, or draw)
 void checkGameState(vector<Space>& bvec){
 	auto whitepc = 0;
 	auto blackpc = 0;
 	for (Space i : bvec){
-		if (i.color = 'w') { whitepc += 1; }
-		if (i.color = 'b') { blackpc += 1; }
+		if (i.color == 'w') { whitepc += 1; }
+		if (i.color == 'b') { blackpc += 1; }
 	}
 	if (whitepc == 1 && blackpc == 1) { gameState = DRAW; }
 	else if ((whitepc > 1 && blackpc == 0) || (bvec[0].color == 'w' && bvec[1].color == 'w')) { gameState = WHITE_WIN; }
@@ -1015,10 +1375,193 @@ void gameDraw(){
 	cout << "\nIt's a draw!\n";
 }
 
-//alpha-beta search algorithm
-//Space* alphaBetaBestChoice(vector <Space*>& spvec){
-//
-//}
+//alpha-beta search algorithm functions
+int maxDepth;
+int nodeCount;
+int maxPrune;
+int minPrune;
+int tempMaxDepth;
+int tempNodeCount;
+int tempMaxPrune;
+int tempMinPrune;
+double duration;
+clock_t start;
+
+int boardEval(int wCount, int bCount, vector<Space>& bvec){	//evaluates the score of a game that is not over yet
+	int score = 0;
+	if (bvec[0].color == 'w' && bvec[1].color != 'w') { score -= 10; }
+	if (bvec[1].color == 'w' && bvec[0].color != 'w') { score -= 10; }
+	if (bvec[86].color == 'b' && bvec[87].color != 'b') { score += 10; }
+	if (bvec[87].color == 'b' && bvec[86].color != 'b') { score += 10; }
+	score += (bCount - wCount) * 4;
+	return score;
+}
+
+treeInfo alphaBetaScore(Space*& spo, vector<Space>& bveco, int nodeDepth, int depthLimit, bool isMaxTurn, int alpha, int beta){
+	vector<Space> bvec = bveco;
+	Space* sp = &bvec[spo->vectorNum];
+	tempNodeCount += 1;
+	treeInfo ti;
+	ti.depth = nodeDepth;
+
+	auto whitepc = 0;
+	auto blackpc = 0;
+
+	for (Space i : bvec){
+		if (i.color == 'w') { whitepc += 1; }
+		if (i.color == 'b') { blackpc += 1; }
+	}
+	if (whitepc == 1 && blackpc == 1) { 
+		ti.score = 0; 
+		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+		return ti;  
+	}
+	else if ((whitepc > 1 && blackpc == 0) || (bvec[0].color == 'w' && bvec[1].color == 'w')) { 
+		ti.score = -1000; 
+		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+		return ti; 
+	}
+	else if ((blackpc > 1 && whitepc == 0) || (bvec[86].color == 'b' && bvec[87].color == 'b')) { 
+		ti.score = 1000; 
+		duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+		return ti; 
+	}
+	else {
+		if (isMaxTurn){																									//max-value function
+			if (nodeDepth == depthLimit){
+				if (checkIfBlackCanCapture(bvec)){ blackCapToSpace(sp, bvec); }
+				else { blackMoveToSpace(sp, bvec); }
+				ti.score = boardEval(whitepc, blackpc, bvec);
+				duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+				return ti;
+			}
+			else{
+				vector<Space*> spVec;
+				ti.score = alpha;
+				if (checkIfBlackCanCapture(bvec)){ 
+					blackCapToSpace(sp, bvec); 
+					spVec = getBlackCaptureArray(bvec);
+					for (int i = 0; i < spVec.size(); i++){
+						treeInfo cti = alphaBetaScore(spVec[i], bvec, nodeDepth + 1, depthLimit, false, alpha, beta);
+						ti.score = max(ti.score, cti.score);
+						ti.depth = max(ti.depth, cti.depth);
+						alpha = max(alpha, ti.score);
+						if (beta <= alpha) {
+							tempMaxPrune += 1;
+							break;
+						}
+					}
+					duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+					return ti;
+
+				}
+				else { 
+					blackMoveToSpace(sp, bvec); 
+					spVec = getBlackMoveArray(bvec);
+					for (int i = 0; i < spVec.size(); i++){
+						treeInfo cti = alphaBetaScore(spVec[i], bvec, nodeDepth + 1, depthLimit, false, alpha, beta);
+						nodeCount += 1;
+						ti.score = max(ti.score, cti.score);
+						ti.depth = max(ti.depth, cti.depth);
+						alpha = max(alpha, ti.score);
+						if (beta <= alpha) {
+							tempMaxPrune += 1;
+							break;
+						}
+					}
+					duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+					return ti;
+				}
+			}
+		}
+		else {																											//min-value function
+			if (nodeDepth == depthLimit){
+				if (aiCheckIfWhiteCanCapture(bvec)){ aiWhiteCapToSpace(sp, bvec); }
+				else { aiWhiteMoveToSpace(sp, bvec); }
+				ti.score = boardEval(whitepc, blackpc, bvec);
+				return ti;
+			}
+			else{
+				vector<Space*> spVec;
+				ti.score = beta;
+				if (aiCheckIfWhiteCanCapture(bvec)){ 
+					aiWhiteCapToSpace(sp, bvec); 
+					spVec = getWhiteCaptureArray(bvec);
+					for (int i = 0; i < spVec.size(); i++){
+						treeInfo cti = alphaBetaScore(spVec[i], bvec, nodeDepth + 1, depthLimit, true, alpha, beta);
+						nodeCount += 1;
+						ti.score = min(ti.score, cti.score);
+						ti.depth = max(ti.depth, cti.depth);
+						beta = min(alpha, ti.score);
+						if (beta <= alpha) {
+							tempMinPrune += 1;
+							break;
+						}
+					}
+					duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+					return ti;
+
+				}
+				else { 
+					aiWhiteMoveToSpace(sp, bvec); 
+					spVec = getWhiteMoveArray(bvec);
+					for (int i = 0; i < spVec.size(); i++){
+						treeInfo cti = alphaBetaScore(spVec[i], bvec, nodeDepth + 1, depthLimit, true, alpha, beta);
+						nodeCount += 1;
+						ti.score = min(ti.score, cti.score);
+						ti.depth = max(ti.depth, cti.depth);
+						beta = min(alpha, ti.score);
+						if (beta <= alpha) {
+							tempMinPrune += 1;
+							break;
+						}
+					}
+					duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+					return ti;
+				}
+			}
+		}
+	}
+}
+
+Space* alphaBetaBestChoice(vector<Space*>& spvec){ //displays information regarding the alpha-beta algorithm and returns the chosen move
+	int bestScore = -1000;
+	int bestIndex = 0;
+	vector<int> scoreVec;
+	start = clock();
+	for (int i = 0;; i++){																//performs iterative deepening on algorithm and returns early results in case the algorithm does not finish in time
+		vector<int> depthVec;
+		tempMaxDepth = 0;
+		tempNodeCount = 0;
+		tempMaxPrune = 0;
+		tempMinPrune = 0;
+		for (Space* j : spvec) {
+			treeInfo ti = alphaBetaScore(j, boardVec, 0, i, true, -1000, 1000); 
+			depthVec.push_back(ti.score);
+			if (tempMaxDepth < ti.depth) { tempMaxDepth = ti.depth; }
+			if (duration > 10.0) { break; }
+		}
+		scoreVec = depthVec;
+		maxDepth = tempMaxDepth;
+		nodeCount = tempNodeCount;
+		maxPrune = tempMaxPrune;
+		minPrune = tempMinPrune;
+		if (i > tempMaxDepth || duration > 10.0) { break; }												//ends iterative deepening loop if depth exceeds max algorithm tree depth
+	}
+	for (int i = 0; i < scoreVec.size(); i++){
+		if (bestScore < scoreVec[i]){
+			bestScore = scoreVec[i];
+			bestIndex = i;
+		}
+	}
+	cout << "\nMaximum depth of game tree reached: " << maxDepth
+		<< "\nTotal number of nodes generated: " << nodeCount
+		<< "\nNumber of times pruning occurred within the MAX-VALUE function: " << maxPrune
+		<< "\nNumber of times pruning occurred within the MIN-VALUE function: " << minPrune
+		<< "\nTime elapsed: " << duration << " seconds\n"
+		<< "Computer's move: " << spvec[bestIndex]->yCoord << spvec[bestIndex]->xCoord << "\n\n";
+	return spvec[bestIndex];
+}
 
 //player's turn function
 void playerTurn(){
@@ -1088,13 +1631,14 @@ void playerTurn(){
 void aiTurn(){
 	cout << "\nComputer's turn.\n";
 	if (checkIfBlackCanCapture(boardVec)){
+		cout << "Computer is obligated to capture an enemy piece.\n\n";
 		vector<Space*> spVec = getBlackCaptureArray(boardVec);
-		Space* spp = getBlackBestChoice(spVec);
+		Space* spp = alphaBetaBestChoice(spVec);
 		blackCapToSpace(spp, boardVec);
 	}
 	else{
 		vector<Space*> spVec = getBlackMoveArray(boardVec);
-		Space* spp = getBlackBestChoice(spVec);
+		Space* spp = alphaBetaBestChoice(spVec);
 		blackMoveToSpace(spp, boardVec);
 	}
 	humanTurn = true;
@@ -1121,5 +1665,5 @@ int main()
 	
 	else { cout << "Something went wrong."; }
 	
-	cin.get();
+	system("pause");
 }
